@@ -7,8 +7,6 @@
 1. [sysfs文件系统和linux设备模型](#sysfsmode)
 1. [udev的组成](#udevmakeof)
 1. [udev规制文件](#udevrule)
-1. [udev的组成](#udevmakeof)
-1. [udev的组成](#udevmakeof)
 ## <span id="sysapi"></span>[文件操作的系统调用](#TOCID)
 | 函数|说明|
 |:-|:-|
