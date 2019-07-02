@@ -14,6 +14,7 @@ Markdown语法目录
 1. [代码](#codeid)
 1. [分割线](#dividing)
 1. [注脚](#footnote)
+1. [上下标](#updownnote)
 # Markdown语法锚点 {#maodian}
 ## 锚点测试 {#ads}
 ## **<span id="title_split"></span>[标题分级](#TOCID)**
@@ -112,11 +113,11 @@ Markdown语法目录
 1. 链接图片
 	* 图片跳转的本质也是路径跳转，语法为```[显示的字符](路径)```其中路径可以是网址，也可以是文件路径。
 	跳转至[网络图片](https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1561367119854&di=4a8e27c9526bc15a1049cd2f2518235e&imgtype=0&src=http%3A%2F%2Fbbswater-fd.zol-img.com.cn%2Ft_s1200x5000%2Fg2%2FM00%2F04%2F06%2FChMlWl0PLL6IFdHHAAL7rD_mjKAAALLKwMCtcIAAvvE767.jpg)
-	跳转至[本地鸡血图片](00Markdown语法0.jpg)
+	跳转至[本地鸡血图片](pic/00Markdown语法0.jpg)
 
 ## **<span id="picture"></span>[插入图片](#TOCID)**
-1. 插入本地图片，使用`![本地鸡血图片](00Markdown语法0.jpg)`
-	![本地鸡血图片](00Markdown语法0.jpg)
+1. 插入本地图片，使用`![本地鸡血图片](pic/00Markdown语法0.jpg)`
+	![本地鸡血图片](pic/00Markdown语法0.jpg)
 1. 插入网络图片，使用`![网络图片](https://raw.githubusercontent.com/vencol/Blog/master/1906/00Markdown%E8%AF%AD%E6%B3%950.jpg)`
 	![网络图片](https://raw.githubusercontent.com/vencol/Blog/master/1906/00Markdown%E8%AF%AD%E6%B3%950.jpg)
 1. 输入base64数据流图片
@@ -215,11 +216,24 @@ int main(void)
 1. - - - 
 
 ## **<span id="footnote"></span>[注脚](#TOCID)**
+```
 * 注脚会自动安排到末尾
 * 使用 Markdown[^1]可以效率的书写文档, 直接转换成 HTML[^2], 你可以使用 Leanote[^Le] 编辑器进行书写。
 
 [^1]:Markdown是一种纯文本标记语言
 [^2]:HyperText Markup Language 超文本标记语言
 [^Le]:开源笔记平台，支持Markdown和笔记直接发为博文
+```
+* 注脚会自动安排到末尾
+* 使用 Markdown[^1]可以效率的书写文档, 直接转换成 HTML[^2], 你可以使用 Leanote[^Le] 编辑器进行书写。
+[^1]:Markdown是一种纯文本标记语言
+[^2]:HyperText Markup Language 超文本标记语言
+[^Le]:开源笔记平台，支持Markdown和笔记直接发为博文
 
-
+## **<span id="updownnote"></span>[上下标](#TOCID)**
+```
+H<sub>2</sub>O  CO<sub>2</sub>
+爆米<sup>TM</sup>
+```
+H<sub>2</sub>O  CO<sub>2</sub>
+爆米<sup>TM</sup>

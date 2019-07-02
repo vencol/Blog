@@ -4,8 +4,11 @@
 1. [linux文件系统的目录结构](#linuxtoc)
 1. [linux文件系统与驱动](#fsdriver)
 1. [devfs文件系统与驱动](#devfsdriver)
-1. [linux文件系统与驱动](#fsdriver)
-1. [linux文件系统与驱动](#fsdriver)
+1. [sysfs文件系统和linux设备模型](#sysfsmode)
+1. [udev的组成](#udevmakeof)
+1. [udev规制文件](#udevrule)
+1. [udev的组成](#udevmakeof)
+1. [udev的组成](#udevmakeof)
 ## <span id="sysapi"></span>[文件操作的系统调用](#TOCID)
 | 函数|说明|
 |:-|:-|
@@ -109,14 +112,14 @@ open("test",O_CREAT, S_ISUID&nbsp; | &nbsp;S_IRWXU&nbsp; | &nbsp;S_IXOTH&nbsp; |
 1. 应用程序和VFS之间的接口是系统调用
 1. VFS和文件系统已经设备文件之间的接口是file_operations结构体
 1. file_operations结构体包含了对文件进行打开、关闭、读写和控制的一系列成员函数
-	![文件系统与设备驱动的关系](03Linux文件操作学习1.png)
+	![文件系统与设备驱动的关系](pic/03Linux文件操作学习1.png)
 1. 字符设备没有类似于ext2的文件系统，所以字符设备的file_operations结构体就直接有字符设备驱动提供了。
 1. 块设备有两种访问方法，一是不通过文件系统直接访问块设备。在linux内核实现了统一的def_blk_fops这样的file_operations(源代码位于fs/block_dev.c)，所以当我们运行类似于`dd if=/dev/sdb1 of=sdb1.img`的命令的时候，把整个/dev/sdb1分区复制到sdb1.img时，内核就是用def_blk_fops这个file_operations。
 1. 访问块设备的另外一种方法，通过文件系统来访问块设备，文件系统会把针对文件的对鞋转换为针对块设备原始删去的读写。ext2、fat、Btrfs等文件系统中会实现针对VFS的file_operations，设备驱动层看不到file_operations的存在。
-	![应用程序、VFS与设备驱动的关系](03Linux文件操作学习2.png)
+	![应用程序、VFS与设备驱动的关系](pic/03Linux文件操作学习2.png)
 1. file结构体
 	file结构体代表一个打开的文件，每个打开的文件都有一个struct file，有内核打开文件时创建，并传递给相应的调用函数。在所有文件实例关闭后，内核释放这个数据结构。其代码中的是**数据指针private_data在设备驱动中被广泛运用，大多是指向驱动自定义的用于描述设备的结构体**
-	![file文件结构体代码](03Linux文件操作学习3.png)
+	![file文件结构体代码](pic/03Linux文件操作学习3.png)
 1. inode结构体
 	&emsp;&emsp;VFS inode包含文件访问权限、属主、组、大小、生成时间、访问时间、最后修改时间等信息，它是linux管理文件系统的最基本单位，也是文件系统连接任何子目录、文件的桥梁。
 	&emsp;&emsp;结构体中的i_rdev字段包含设备编号，i_rdev的高12位为主设备编号，低20位为次设备编号。可以通过imajor获取主设备编号，iminor获取次设备编号。
@@ -133,5 +136,78 @@ devfs_handle_t devfs_mk_dir(devfs_handle_t dir, const char *name, void *info)//�
 devfs_handle_t devfs_register(devfs_handle_t dir, const char *name, unsigned int flags, unsigned int major, unsigned int minor, umode_t mode, void *ops, void *info)//创建设备文件
 void devfs_unregister(devfs_handle_t de)//销毁设备文件
 ```
-![devfs的使用](03Linux文件操作学习4.png)
+![devfs的使用](pic/03Linux文件操作学习4.png)
 ## <span id="udev"></span>[udev用户空间设备管理](#TOCID)
+1. udev和devfs的区别
+	&emsp;&emsp;尽管devfs有很多优点，但是在linux2.6内核中，devfs被认为是过时的，并最终被udev取代。下面是udev取代devfs的几点原因：
+	1. devfs所做的工作，可以在用户态里面实现。
+	1. 发现devfs有一些无法修复的bug
+	1. devfs的开发者和维护者开始已经停止对代码的维护
+	1. udev完全工作在用户态，并利用设备的加入或移除向内核发送热拔插事件。在热拔插时，设备的详细信息会由内核通过netlink套接字发送出来，发出的时间叫uevent。
+	1. udev设备命名的策略、控制权限和事件处理都是在用户态完成的，它利用内核发出的信息进行创建设备文件节点等工作。
+	![netlink代码1](pic/03Linux文件操作学习5.png)
+	![netlink代码2](pic/03Linux文件操作学习6.png)
+	编译上述程序，并把apple facetime hd camera usb摄像头插入Ubuntu，该程序dump类似下面的信息：
+	![热拔插dump信息](pic/03Linux文件操作学习7.png)
+	udev采用这种netlink的方式接收信息，并根据用户给udev设置的规则做匹配进行工作。
+	1. udev在冷拔插的时候，linux内核在sysfs提供一个uevent的节点，可以往该节点写一个“add”，使内核重新发送netlink，之后udev就可以收到冷拔插的netlink信息。还是如上代码，当我们手动往/sys/module/psmouse/uevent写一个“add”的时候就会有：
+	![热拔插dump信息](pic/03Linux文件操作学习8.png)
+	1. devfs和udev最大的区别在于，在devfs中，当一个不存在的/dev节点被打开的时候，devfs会自动加载驱动，而udev则是在设备被发现的时候加载驱动模块。
+## <span id="sysfsmode"></span>[sysfs文件系统和linux设备模型](#TOCID)
+&emsp;&emsp;linux2.6以后的内核引入了sysfs文件系统，sysfs被认为是和proc、devfs、devpty同类别的文件系统，该文件系统是虚拟的文件系统，可以看成是一个所有系统硬件的层级视图，与提供进程和状态信息的proc文件系统十分类似。sysfs把连接在系统上的设备和总线组织成一个分级的文件系统，并可以由用户空间存取、向用户空间导出内核数据结构以及他们的属性，sysfs一般包括下面的文件目录
+|目录|描述|
+|:-|:-|
+|block|块设备目录，目前此目录已指向到/sys/devices/中设备描述符链接文件|
+|bus|备按总线类型分层放置子目录，/sys/devices/中的所有设备都是链接于某种总线，bus子目录在每一种具体总线之下都可以找到对应每一个具体设备的描述符号链接|
+|class|设备按功能分类放置子目录|
+|dev|按字符设备和块设备的主次号码分类放置子目录，根据主次号码链接到真实设备（/sys/devices/）的设备描述符链接文件|
+|devices|所有设备的基本总线分类子目录，保存了系统的所有设备，是/sys文件系统管理设备的最重要目录|
+|firmware|系统加载固件的用户空间接口|
+|fs|系统中所有的文件系统，包括文件系统本身和按文件系统分类存放的已挂载点，目前只有duse,gfs2等少数文件系统支持sysfs接口，一些传统的虚拟文件系统VFS层次控制参数仍然在sysctl（/proc/sys/kernel）中|
+|kernel|内核所有可调整参数子目录，目前只有较新的设计在此目录中，其他内核可调整参数仍在sysctl(/proc/sys/kernel)中|
+|module|模块信息，编译为外部模块（.ko文件）时，加载后在目录/sys/module/<module name>中，并且这个目录下有属性文件和属性目录来表示此外部模块的信息|
+|power|系统电源选项，修改此目录的属性文件可以控制机器的电源状态|
+|slab (对应 2.6.23 内核，在 2.6.24 以后移至 /sys/kernel/slab)|从2.6.23 开始可以选择 SLAB 内存分配器的实现，并且新的 SLUB（Unqueued Slab Allocator）被设置为缺省值；如果编译了此选项，在 /sys 下就会出现 /sys/slab ，里面有每一个 kmem_cache 结构体的可调整参数。对应于旧的 SLAB 内存分配器下的 /proc/slabinfo 动态调整接口，新式的 /sys/kernel/slab/<slab_name> 接口中的各项信息和可调整项显得更为清晰。|
+![linux设备模型](pic/03Linux文件操作学习9.png)
+![linux设备模型关系](pic/03Linux文件操作学习10.png)
+**在linux内核中，设备和驱动是分开注册的，注册一个设备的时候，并不需要驱动已经存在，而注册一个驱动的时候，也不需要一个设备已经存在。设备和驱动各自涌向内核，每个设备和驱动涌入内核的时候，都会去寻找另一半，他们通过bus_type的match()函数捆绑起来**
+**总线(bus_type)、驱动(device_type)和设备(device)最终都会落实为sysfs的一个目录，从代码可以发现，它们实际都是从kobject派生而来，kobject可以看成是所有总线(bus_type)、设备(device)和驱动(device_type)的抽象基类，1个kobject对应一个目录**
+## <span id="udevmakeof"></span>[udev的组成](#TOCID)
+&emsp;&emsp;udev和systemd项目合并，可见于http://lwn.net/Articles/490413的文档《Udev and systemd to merge》，可从http://cgit.freedesktop.org/systemd、https://github.com/systemd/systemd等位置下载最新代码。
+&emsp;&emsp;udev在用户空间执行，动态的建立和删除设备文件，允许每个开发者不关心主次设备号而提供LSB(linux标准规范，linux standard base)名称，并且可以根据需要固定名称，udev工作流程：
+	1. 当内核发现新设备后，内核通过netlink发送uevent
+	1. udev获取内核发出的信息，进行规制匹配（匹配的内容包括：SUBSYSTEM、ACTION、attribute、内核提供的名称（KERNEL=）以及其他的环境变量）。
+	1. 假设我们再linux系统插上一个Kingston的U盘，我们可以通过udev工具`udevadmionitou --kernel --property --udev`捕获uevent信息如下：
+	![kingston U盘的uevent](pic/03Linux文件操作学习11.png)
+	我们可以通过下面的代码让，插入kingstonU盘的时候自动为它创建一个/dev/kingstonUD的符号链接
+	```
+	#Kingston USB mass storage
+	SUBSYSTEM=="block",ACTION=="add",KERNEL=="*sd?",ENV{ID_TYPE}=="disk",ENV{ID_VENDOR}=="Kingston",ENV{ID_USB_DRIVER}=="usb-storage",SYMLINK+="kingstonUD"
+	```
+## <span id="udevrule"></span>[udev规制文件](#TOCID)
+&emsp;&emsp;udev 规则是定义在一个以 .rules 为扩展名的文件中。那些文件主要放在两个位置：/usr/lib/udev/rules.d，这个目录用于存放系统安装的规则；/etc/udev/rules.d/ 这个目录是保留给自定义规则的。定义那些规则的文件的命名惯例是使用一个数字作为前缀（比如，50-udev-default.rules），并且以它们在目录中的词汇顺序进行处理的。在 /etc/udev/rules.d 中安装的文件，会覆盖安装在系统默认路径中的同名文件。
+&emsp;&emsp;udev的规则文件是以行为单位，以"#"开头的表示注释，其余每一行代表一个规则，每个规则分一个或多个匹配部分和赋值部分，匹配部分用匹配专用关键字来表示，赋值部分用赋值专用部分来表示。
+&emsp;&emsp;udev的规则匹配，可以通过"*"代替任意字符、"?"代替一个字符、"[a~c]" 匹配一个a到c的字符、"[1~9]"匹配一个1到9的数字等shell通配符来灵活匹配。此外，%k代表KERNEL、%n代表设备KERNEL序号(如存储设备的分区号)
+**使用udevadm info工具查找规则信息**
+**`udevadm info -a -p /sys/devices/platform/serial8250/tty/ttyS0`获取tty信息**
+**`udevadm info -a -p $(udevadm info -q path -n /dev/<节点名>)`反向分析信息**
+|匹配键|描述|
+|:-|:-|
+|ACTION|事件(uevent)的行为，例如：add(添加设备)、remove(删除设备)。|
+|KERNEL|内核设备名称，例如：sda, cdrom|
+|ATTR|设备属性|
+|NAME|创建设备的文件名|
+|SYMLINK|设备的符号链接名|
+|OWNER|设备所有者|
+|GROUP|设备所属组|
+|MODE|节点访问权限|
+|DEVPATH|设备的 devpath 路径|
+|SUBSYSTEM|设备的子系统名称，例如：sda 的子系统为 block|
+|BUS|设备在 devpath 里的总线名称，例如：usb|
+|DRIVER|设备在 devpath 里的设备驱动名称，例如：ide-cdrom|
+|ID|设备在 devpath 里的识别号|
+|SYSFS{filename}|设备的 devpath 路径下，设备的属性文件“filename”里的内容,YSFS{model}==“ST936701SS”表示：如果设备的型号为 ST936701SS|
+|ENV{key}|环境变量。在一条规则中，可以设定最多五条环境变量的 匹配键|
+|IMPORT|调用外部程序|
+|PROGRAM|调用外部命令,PROGRAM=="/lib/udev/scsi_id -g -s $devpath"|
+|RESULT|外部命令 PROGRAM 的返回结果,RESULT=="35000c50000a7ef67"|
