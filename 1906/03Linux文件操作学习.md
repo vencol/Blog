@@ -30,6 +30,7 @@
 |O_NOBLOCK|以非阻塞方式打开一个文件|
 |O_TRUNC|如果文件存在，则删除文件内容|
 **O_RDONLY、O_WRONLY、O_RDWR三个标志只能使用一个。如果使用O_CREAT标志，且调用int open(const char \*pathname, init flags, mode_t mode)的时候，必须指定mode标志来表示访问权限**
+
 |<span id="modetable"></span>mode标志文件访问权限|含义|
 |:-|:-|
 |S_IRUSR|用户可读|
@@ -47,6 +48,7 @@
 |S_ISUID|设置用户执行ID|
 |S_IGUID|设置用户组执行ID|
 **除了通过上述宏进行或逻辑来设置权限外，linux还可以用5个数字来表示文件的各种权限，其中权限由3bit组成，b001表示执行权限，b010表示写权限，b100表示读权限，**
+
 |mode标志文件访问权限的5位数字|含义|
 |:-|:-|
 |第1位|设置用户ID|
@@ -90,6 +92,7 @@ open("test",O_CREAT, S_ISUID&nbsp; | &nbsp;S_IRWXU&nbsp; | &nbsp;S_IXOTH&nbsp; |
 |r+、r+b、rb+|以读写方式打开|
 |w+、w+b、wb+|以读写方式打开。如果文件不存在，创建新文件，否则文件被截断|
 |a+、a+b+、ab+|以读和追加的方式打开。如果文件不存在，则创建文件|
+
 **其中，b是区分二进制文件和文本文件，这一点在DOS和Windows系统中有区分，在linux不区分**
 ## <span id="linuxtoc"></span>[linux文件系统的目录结构](#TOCID)
 |目录|描述|

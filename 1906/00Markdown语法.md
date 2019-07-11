@@ -14,7 +14,7 @@ Markdown语法目录
 1. [代码](#codeid)
 1. [分割线](#dividing)
 1. [注脚](#footnote)
-1. [上下标](#updownnote)
+2. [特殊标号](#updownnote)
 # Markdown语法锚点 {#maodian}
 ## 锚点测试 {#ads}
 ## **<span id="title_split"></span>[标题分级](#TOCID)**
@@ -230,10 +230,61 @@ int main(void)
 [^2]:HyperText Markup Language 超文本标记语言
 [^Le]:开源笔记平台，支持Markdown和笔记直接发为博文
 
-## **<span id="updownnote"></span>[上下标](#TOCID)**
-```
-H<sub>2</sub>O  CO<sub>2</sub>
-爆米<sup>TM</sup>
-```
-H<sub>2</sub>O  CO<sub>2</sub>
-爆米<sup>TM</sup>
+## **<span id="updownnote"></span>[特殊标号](#TOCID)**
+1. 上下标
+	```
+	H<sub>2</sub>O  CO<sub>2</sub>
+	爆米<sup>TM</sup>
+	```
+	H<sub>2</sub>O  CO<sub>2</sub>
+	爆米<sup>TM</sup>
+2. 数学标号
+	> $f(x, y) = x^2 + y^2, x \epsilon [0, 100], y \epsilon \{3, 4, 5\}$<br>
+	`$f(x, y) = x^2 + y^2, x \epsilon [0, 100], y \epsilon \{3, 4, 5\}$`
+
+	> $\frac{分子}{分母}$，`$\frac{分子}{分母}$`
+
+	> $\sqrt[n次方]{被开数}, \sqrt{16}，$`$sqrt[n次方]{被开数}, \sqrt{16}$`
+
+	> $f(x_1,x_2,\ldots,x_n) = x_1^2+x_2^2+\cdots+x_n^2$<br>
+	`$f(x_1,x_2,\ldots,x_n) = x_1^2+x_2^2+\cdots+x_n^2$`
+
+	> $\vec a \cdot \vec b = 0$,`$\vec a \cdot \vec b = 0$`
+
+	> $\int_0^1x^2dx$ , `$\int_0^1x^2dx$`
+
+	> $\lim_{n\rightarrow+\infty}\frac{1}{n(n+1)}$, `$\lim_{n\rightarrow+\infty}\frac{1}{n(n+1)}$`
+
+	> $\sum_1^n\frac{1}{x^2}, \prod_{i=0}^n{1 \over {x^2}}$, `$\sum_1^n\frac{1}{x^2}, \prod_{i=0}^n{1 \over {x^2}}$`
+
+	> $\alpha \beta \gamma \Gamma \delta \Delta \epsilon \varepsilon \zeta \eta \theta \Theta \vartheta \iota \kappa \lambda \Lambda \mu \nu \xi \Xi \pi \Pi \varpi \rho \varrho \sigma \Sigma \varsigma \tau \upsilon \Upsilon \phi \Phi \varphi \chi \psi \Psi \Omega \omega$<br>
+	`$\alpha \beta \gamma \Gamma \delta \Delta \epsilon \varepsilon \zeta \eta \theta \Theta \vartheta \iota \kappa \lambda \Lambda \mu \nu \xi \Xi \pi \Pi \varpi \rho \varrho \sigma \Sigma \varsigma \tau \upsilon \Upsilon \phi \Phi \varphi \chi \psi \Psi \Omega \omega$`
+
+	> $\# \$ \%\&\_\{\}$, `$\# \$ \%\&\_\{\}$`
+
+	> $\pm \times \div \mid \cdot \circ \ast \bigodot \bigotimes \leq 
+	\geq \neq \approx \equiv \sum \prod \coprod$,<br>
+	`$\pm \times \div \mid \cdot \circ \ast \bigodot \bigotimes \leq 
+	\geq \neq \approx \equiv \sum \prod \coprod$`
+
+	> $\emptyset \in \notin \subset \supset \subseteq \supseteq \bigcap \bigcup \bigvee \bigwedge \biguplus \bigsqcup$<br>
+	`$\emptyset \in \notin \subset \supset \subseteq \supseteq \bigcap \bigcup \bigvee \bigwedge \biguplus \bigsqcup$`
+
+	> $\log \lg \ln$, `$\log \lg \ln$`
+
+	> $\bot \angle 30^\circ \sin \cos \tan \cot \sec \csc$<br>
+	`$\bot \angle 30^\circ \sin \cos \tan \cot \sec \csc$`
+
+	> $y{\prime}x \int \iint \iiint \oint \lim \infty \nabla$<br>
+	`$y{\prime}x \int \iint \iiint \oint \lim \infty \nabla$`
+
+	> $\because \therefore \forall \exists$<br>
+	`$\because \therefore \forall \exists$`
+
+	> $\uparrow \downarrow \leftarrow \rightarrow \Uparrow \Downarrow \Leftarrow \Rightarrow \longleftarrow \longrightarrow \Longleftarrow \Longrightarrow$<br>
+	`$\uparrow \downarrow \leftarrow \rightarrow \Uparrow \Downarrow \Leftarrow \Rightarrow \longleftarrow \longrightarrow \Longleftarrow \Longrightarrow$`
+
+	> $\overline{a+b+c+d} \underline{a+b+c+d} \overbrace{a+\underbrace{b+c}_{1.0}+d}^{2.0} \hat{y} \check{y} \breve{y}$<br>
+	`$\overline{a+b+c+d} \underline{a+b+c+d} \overbrace{a+\underbrace{b+c}_{1.0}+d}^{2.0} \hat{y} \check{y} \breve{y}$`
+
+
