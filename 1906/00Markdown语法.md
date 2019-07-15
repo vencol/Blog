@@ -239,6 +239,10 @@ int main(void)
 	H<sub>2</sub>O  CO<sub>2</sub>
 	爆米<sup>TM</sup>
 2. 数学标号
+	> $x^{y^z} = (1+e^x)^{-2xy^w}$, `$x^{y^z} = (1+e^x)^{-2xy^w}$`
+
+	> $b_c$ $b_{hjj}$ ${kiub}_{hjj}$,`$b_c$ $b_{hjj}$ ${kiub}_{hjj}$`
+
 	> $f(x, y) = x^2 + y^2, x \epsilon [0, 100], y \epsilon \{3, 4, 5\}$<br>
 	`$f(x, y) = x^2 + y^2, x \epsilon [0, 100], y \epsilon \{3, 4, 5\}$`
 
@@ -260,7 +264,7 @@ int main(void)
 	> $\alpha \beta \gamma \Gamma \delta \Delta \epsilon \varepsilon \zeta \eta \theta \Theta \vartheta \iota \kappa \lambda \Lambda \mu \nu \xi \Xi \pi \Pi \varpi \rho \varrho \sigma \Sigma \varsigma \tau \upsilon \Upsilon \phi \Phi \varphi \chi \psi \Psi \Omega \omega$<br>
 	`$\alpha \beta \gamma \Gamma \delta \Delta \epsilon \varepsilon \zeta \eta \theta \Theta \vartheta \iota \kappa \lambda \Lambda \mu \nu \xi \Xi \pi \Pi \varpi \rho \varrho \sigma \Sigma \varsigma \tau \upsilon \Upsilon \phi \Phi \varphi \chi \psi \Psi \Omega \omega$`
 
-	> $\# \$ \%\&\_\{\}$, `$\# \$ \%\&\_\{\}$`
+	> $\# \$ \%\&\_\{\}$, `$\# \$ \%\&\_\{\}$` 
 
 	> $\pm \times \div \mid \cdot \circ \ast \bigodot \bigotimes \leq 
 	\geq \neq \approx \equiv \sum \prod \coprod$,<br>
@@ -286,5 +290,6 @@ int main(void)
 
 	> $\overline{a+b+c+d} \underline{a+b+c+d} \overbrace{a+\underbrace{b+c}_{1.0}+d}^{2.0} \hat{y} \check{y} \breve{y}$<br>
 	`$\overline{a+b+c+d} \underline{a+b+c+d} \overbrace{a+\underbrace{b+c}_{1.0}+d}^{2.0} \hat{y} \check{y} \breve{y}$`
+
 
 
