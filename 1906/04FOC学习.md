@@ -63,7 +63,7 @@
 	* **$\alpha-\beta$坐标系($\alpha$轴与A轴重合，$\beta$轴超前$\alpha$轴90°)**
 	![Clarke变换](pic/04Clarke变换.png)![Clarke变换](pic/04Clarke变换结果.png)
 	> 设：三相电绕组的匝数为$N_3$,两相绕组有效匝数为$N_2$
-	> $$N_2i_{\alpha}=N_3i_A-N_3i_Bcos\frac{\pi}{3}-N_3i_Ccos\frac{\pi}{3}=N_3(i_A-\frac{i_B}{2}-\frac{i_C}{2}) \tag{1}$$ 
+	> $$ N_2i_{\alpha}=N_3i_A-N_3i_Bcos\frac{\pi}{3}-N_3i_Ccos\frac{\pi}{3}=N_3(i_A-\frac{i_B}{2}-\frac{i_C}{2}) \tag{1}$$ 
 	> $$N_2i_{\beta}=N_3i_Bsin\frac{\pi}{3}-N_3i_Csin\frac{\pi}{3}=\frac{\sqrt{3}}{2}N_2(i_B-i_C) \tag{2}$$
 	> $$i_A+i_B+i_C=0  \tag{3}$$
 	由式(1)(2)和$\frac{\sqrt{2}}{2}$(3)(**取$\frac{\sqrt{2}}{2}$是因为刚好使得矩阵成为正交矩阵**)可得
@@ -138,7 +138,7 @@
 	$$U_s(t) = \sqrt{\frac{2}{3}}[\frac{2}{3}U_d - \frac{1}{3}U_de^{j\frac{2\pi}{3}} - \frac{1}{3}U_de^{j\frac{4\pi}{3}}]=\sqrt{\frac{2}{3}}U_d $$
 
 	| 电压|开关S<sub>A</sub>|开关S<sub>B</sub>|开关S<sub>C</sub>|U<sub>A</sub>|U<sub>B</sub>|U<sub>C</sub>|合成U<sub>S</sub>|
-	|:-|:-|:-|:-|:-|:-|:-|:-|:-|
+	|:-|:-|:-|:-|:-|:-|:-|:-|
 	| $u_0$|0|0|0|0|0|0|0|
 	| $u_1$|1|0|0|$\frac{2}{3}U_d$|$-\frac{1}{3}U_d$|$-\frac{1}{3}U_d$|$\sqrt{\frac{2}{3}}U_d$|
 	| $u_2$|1|1|0|$\frac{1}{3}U_d$|$\frac{1}{3}U_d$|$-\frac{2}{3}U_d$|$\sqrt{\frac{2}{3}}U_de^{j\frac{\pi}{3}}$|
