@@ -22,7 +22,7 @@
    1. [变换到旋转坐标系方程](#spin)
 3. [正交坐标系的状态方程](#status)
    1. [以速度\定子电流\转子磁通为输入量的状态方程](#wipstatus)
-   2. [变换到静止坐标系方程](#static)
+   2. [以速度\定子电流\定子磁通为输入量的状态方程](#wip1status)
 ## <span id="foc"></span>[FOC框图](#TOCID)
 <center>FOC总框图</center>
 
@@ -390,7 +390,7 @@
 		**转换为自动控制原理图如下：**
 		![旋转变换](pic/04ab坐标系输入速度电流磁通.png)
 	
-1. 以速度\定子电流\定子磁通为输入量的状态方程<span id="wipstatus"></span>[](#TOCID)
+1. 以速度\定子电流\定子磁通为输入量的状态方程<span id="wip1status"></span>[](#TOCID)
 	1. qt坐标系的状态方程
 		> 选取输入状态量:  $$X=\left[ \begin{matrix} \omega & \psi_{sd} & \psi_{sq} & i_{sd} & i_{sq} \end{matrix} \right]^T $$
 
