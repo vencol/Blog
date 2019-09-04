@@ -12,6 +12,7 @@
    2. [磁链矢量扇区判断](#sector)
    3. [SVPWM主要控制方式分类](#svpwmcontrol)
    4. [SVPWM的时间控制](#svpwmtime)
+   4. [SVPWM的时间控制和电压$\alpha\beta$关系](#svpwmabtime)
 5. [位置估算](#position)
    1. [位置方程](#posifun)
    2. [反正切法-位置估算](#arctan)
@@ -36,6 +37,10 @@
 <center>无感FOC框图</center>
 
 ![FOC](pic/04无感FOC框图.png)
+![FOC](pic/04矢量控制图.png)
+![FOC](pic/04FOC.png)
+![FOC](pic/04无感控制.png)
+![FOC](pic/04自总结foc.png)
 
 ## <span id="iqmathlib"></span>[IQ库学习](#TOCID)
 1. [IQ库英文文档](pic/04IQ_math_lib.pdf),文件路径：pic/04IQ_math_lib.pdf
@@ -196,9 +201,7 @@
 	| 0|0|1|扇区4|
 	| 0|1|1|扇区5|
 	| 0|1|0|扇区6|
-	若把ABC的值按照3bit进行分配，则可以做如下等式判断$\beta$条件$N=4C+2B+A$
-	| 代码条件扇区|1|2|3|4|5|6|
-	|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+	若把ABC的值按照3bit进行分配，则可以做如下等式判断$\beta$条件$N=4C+2B+A$   
 	| N|3|1|5|4|6|2|
 
 2. SVPWM主要控制方式分类<span id="svpwmcontrol"></span>[](#TOCID)
@@ -228,6 +231,29 @@
 	& T_7=T_s-T_4-T_6
 	\end{aligned}\right. $$
 	> 式中m为SVPWM调制系数,(调制比=调制波基波峰值/载波基波峰值),$T_7$为零向量时间
+3. SVPWM的时间控制和电压$\alpha\beta$关系<span id="svpwmabtime"></span>[](#TOCID)
+	![SVPWM的时间控制和电压](pic/04SVPWM的时间控制和电压.png)
+	如图所示，svpwm时间控制和电压$\alpha\beta$关系，可表示为
+	> $$ \left\{\begin{aligned}
+	&U_{\alpha}T_s=U_1 T_1 + U_2 T_2 \cos{\frac{\pi}{3}} =\frac{2}{3}U_d(T_1 + \frac{1}{2}T_2)\\
+	&U_{\beta}T_s=U_2 T_2 \sin{\frac{\pi}{3}} = \frac{2}{3}U_d * \frac{\sqrt{3}}{2}T_2
+	\end{aligned}\right. $$
+	可解的
+	> $$ \left\{\begin{aligned}
+	&T_1 = \frac{\sqrt{3} T_s}{U_d} (\frac{\sqrt{3}}{2}U_{\alpha} - \frac{\beta}{2})\\
+	&T_2 = \frac{\sqrt{3} T_s}{U_d}U_{\beta}\\
+	&T_0 = T_s - T_1 - T_2
+	\end{aligned}\right. $$
+	通过相应的计算方法可得表如下：(令$K=\frac{\sqrt{3} T_s}{U_d}$)
+
+	| 扇区| $T_x$| $T_y$| $T_0$|
+	|:-:|:-:|:-:|:-:|
+	| 扇区1| $T_1 = K (\frac{\sqrt{3}}{2}U_{\alpha} - \frac{U_\beta}{2})$| $T_2 = KU_{\beta}$| $T_0 = T_s - T_1 - T_2$|
+	| 扇区2| $T_2 = K (\frac{\sqrt{3}}{2}U_{\alpha} + \frac{U_\beta}{2})$| $T_3 = K (\frac{\sqrt{3}}{2}U_{\alpha} - \frac{U_\beta}{2})$| $T_0 = T_s - T_2 - T_3$|
+	| 扇区3| $T_3 = KU_{\beta}$| $T_4 = K (-\frac{\sqrt{3}}{2}U_{\alpha} - \frac{U_\beta}{2})$| $T_0 = T_s - T_3 - T_4$|
+	| 扇区4| $T_4 = K (-\frac{\sqrt{3}}{2}U_{\alpha} + \frac{U_\beta}{2})$| $T_5 = -K U_{\beta}$| $T_0 = T_s - T_4 - T_5$|
+	| 扇区5| $T_5 = K (-\frac{\sqrt{3}}{2}U_{\alpha} - \frac{U_\beta}{2})$| $T_6 = K(\frac{\sqrt{3}}{2}U_{\alpha} - \frac{U_\beta}{2})$| $T_0 = T_s - T_5 - T_6$|
+	| 扇区6| $T_6 = -K U_{\beta}$| $T_1 = K(\frac{\sqrt{3}}{2}U_{\alpha} + \frac{U_\beta}{2})$| $T_0 = T_s - T_6 - T_1$|
 
 ## <span id="position"></span>[位置估算](#TOCID)
 1. 位置方程<span id="posifun"></span>[](#TOCID)
