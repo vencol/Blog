@@ -116,8 +116,8 @@ Markdown语法目录
 	跳转至[本地鸡血图片](pic/00Markdown语法0.jpg)
 
 ## **<span id="picture"></span>[插入图片](#TOCID)**
-1. 插入本地图片，使用`![本地鸡血图片](pic/00Markdown语法0.jpg)`
-	![本地鸡血图片](pic/00Markdown语法0.jpg)
+1. 插入本地图片，使用`![本地鸡血图片](pic/00/00Markdown语法0.jpg)`
+	![本地鸡血图片](pic/00/00Markdown语法0.jpg)
 1. 插入网络图片，使用`![网络图片](https://raw.githubusercontent.com/vencol/Blog/master/1906/00Markdown%E8%AF%AD%E6%B3%950.jpg)`
 	![网络图片](https://raw.githubusercontent.com/vencol/Blog/master/1906/00Markdown%E8%AF%AD%E6%B3%950.jpg)
 1. 输入base64数据流图片

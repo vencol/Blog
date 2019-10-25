@@ -113,14 +113,14 @@ open("test",O_CREAT, S_ISUID&nbsp; | &nbsp;S_IRWXU&nbsp; | &nbsp;S_IXOTH&nbsp; |
 1. 应用程序和VFS之间的接口是系统调用
 1. VFS和文件系统已经设备文件之间的接口是file_operations结构体
 1. file_operations结构体包含了对文件进行打开、关闭、读写和控制的一系列成员函数
-	![文件系统与设备驱动的关系](pic/03Linux文件操作学习1.png)
+	![文件系统与设备驱动的关系](pic/03/03Linux文件操作学习1.png)
 1. 字符设备没有类似于ext2的文件系统，所以字符设备的file_operations结构体就直接有字符设备驱动提供了。
 1. 块设备有两种访问方法，一是不通过文件系统直接访问块设备。在linux内核实现了统一的def_blk_fops这样的file_operations(源代码位于fs/block_dev.c)，所以当我们运行类似于`dd if=/dev/sdb1 of=sdb1.img`的命令的时候，把整个/dev/sdb1分区复制到sdb1.img时，内核就是用def_blk_fops这个file_operations。
 1. 访问块设备的另外一种方法，通过文件系统来访问块设备，文件系统会把针对文件的对鞋转换为针对块设备原始删去的读写。ext2、fat、Btrfs等文件系统中会实现针对VFS的file_operations，设备驱动层看不到file_operations的存在。
-	![应用程序、VFS与设备驱动的关系](pic/03Linux文件操作学习2.png)
+	![应用程序、VFS与设备驱动的关系](pic/03/03Linux文件操作学习2.png)
 1. file结构体
 	file结构体代表一个打开的文件，每个打开的文件都有一个struct file，有内核打开文件时创建，并传递给相应的调用函数。在所有文件实例关闭后，内核释放这个数据结构。其代码中的是**数据指针private_data在设备驱动中被广泛运用，大多是指向驱动自定义的用于描述设备的结构体**
-	![file文件结构体代码](pic/03Linux文件操作学习3.png)
+	![file文件结构体代码](pic/03/03Linux文件操作学习3.png)
 1. inode结构体
 	&emsp;&emsp;VFS inode包含文件访问权限、属主、组、大小、生成时间、访问时间、最后修改时间等信息，它是linux管理文件系统的最基本单位，也是文件系统连接任何子目录、文件的桥梁。
 	&emsp;&emsp;结构体中的i_rdev字段包含设备编号，i_rdev的高12位为主设备编号，低20位为次设备编号。可以通过imajor获取主设备编号，iminor获取次设备编号。
@@ -137,7 +137,7 @@ devfs_handle_t devfs_mk_dir(devfs_handle_t dir, const char *name, void *info)//�
 devfs_handle_t devfs_register(devfs_handle_t dir, const char *name, unsigned int flags, unsigned int major, unsigned int minor, umode_t mode, void *ops, void *info)//创建设备文件
 void devfs_unregister(devfs_handle_t de)//销毁设备文件
 ```
-![devfs的使用](pic/03Linux文件操作学习4.png)
+![devfs的使用](pic/03/03Linux文件操作学习4.png)
 ## <span id="udev"></span>[udev用户空间设备管理](#TOCID)
 1. udev和devfs的区别
 	&emsp;&emsp;尽管devfs有很多优点，但是在linux2.6内核中，devfs被认为是过时的，并最终被udev取代。下面是udev取代devfs的几点原因：
@@ -146,13 +146,13 @@ void devfs_unregister(devfs_handle_t de)//销毁设备文件
 	1. devfs的开发者和维护者开始已经停止对代码的维护
 	1. udev完全工作在用户态，并利用设备的加入或移除向内核发送热拔插事件。在热拔插时，设备的详细信息会由内核通过netlink套接字发送出来，发出的时间叫uevent。
 	1. udev设备命名的策略、控制权限和事件处理都是在用户态完成的，它利用内核发出的信息进行创建设备文件节点等工作。
-	![netlink代码1](pic/03Linux文件操作学习5.png)
-	![netlink代码2](pic/03Linux文件操作学习6.png)
+	![netlink代码1](pic/03/03Linux文件操作学习5.png)
+	![netlink代码2](pic/03/03Linux文件操作学习6.png)
 	编译上述程序，并把apple facetime hd camera usb摄像头插入Ubuntu，该程序dump类似下面的信息：
-	![热拔插dump信息](pic/03Linux文件操作学习7.png)
+	![热拔插dump信息](pic/03/03Linux文件操作学习7.png)
 	udev采用这种netlink的方式接收信息，并根据用户给udev设置的规则做匹配进行工作。
 	1. udev在冷拔插的时候，linux内核在sysfs提供一个uevent的节点，可以往该节点写一个“add”，使内核重新发送netlink，之后udev就可以收到冷拔插的netlink信息。还是如上代码，当我们手动往/sys/module/psmouse/uevent写一个“add”的时候就会有：
-	![热拔插dump信息](pic/03Linux文件操作学习8.png)
+	![热拔插dump信息](pic/03/03Linux文件操作学习8.png)
 	1. devfs和udev最大的区别在于，在devfs中，当一个不存在的/dev节点被打开的时候，devfs会自动加载驱动，而udev则是在设备被发现的时候加载驱动模块。
 ## <span id="sysfsmode"></span>[sysfs文件系统和linux设备模型](#TOCID)
 &emsp;&emsp;linux2.6以后的内核引入了sysfs文件系统，sysfs被认为是和proc、devfs、devpty同类别的文件系统，该文件系统是虚拟的文件系统，可以看成是一个所有系统硬件的层级视图，与提供进程和状态信息的proc文件系统十分类似。sysfs把连接在系统上的设备和总线组织成一个分级的文件系统，并可以由用户空间存取、向用户空间导出内核数据结构以及他们的属性，sysfs一般包括下面的文件目录
@@ -169,8 +169,8 @@ void devfs_unregister(devfs_handle_t de)//销毁设备文件
 |module|模块信息，编译为外部模块（.ko文件）时，加载后在目录/sys/module/<module name>中，并且这个目录下有属性文件和属性目录来表示此外部模块的信息|
 |power|系统电源选项，修改此目录的属性文件可以控制机器的电源状态|
 |slab (对应 2.6.23 内核，在 2.6.24 以后移至 /sys/kernel/slab)|从2.6.23 开始可以选择 SLAB 内存分配器的实现，并且新的 SLUB（Unqueued Slab Allocator）被设置为缺省值；如果编译了此选项，在 /sys 下就会出现 /sys/slab ，里面有每一个 kmem_cache 结构体的可调整参数。对应于旧的 SLAB 内存分配器下的 /proc/slabinfo 动态调整接口，新式的 /sys/kernel/slab/<slab_name> 接口中的各项信息和可调整项显得更为清晰。|
-![linux设备模型](pic/03Linux文件操作学习9.png)
-![linux设备模型关系](pic/03Linux文件操作学习10.png)
+![linux设备模型](pic/03/03Linux文件操作学习9.png)
+![linux设备模型关系](pic/03/03Linux文件操作学习10.png)
 **在linux内核中，设备和驱动是分开注册的，注册一个设备的时候，并不需要驱动已经存在，而注册一个驱动的时候，也不需要一个设备已经存在。设备和驱动各自涌向内核，每个设备和驱动涌入内核的时候，都会去寻找另一半，他们通过bus_type的match()函数捆绑起来**
 **总线(bus_type)、驱动(device_type)和设备(device)最终都会落实为sysfs的一个目录，从代码可以发现，它们实际都是从kobject派生而来，kobject可以看成是所有总线(bus_type)、设备(device)和驱动(device_type)的抽象基类，1个kobject对应一个目录**
 ## <span id="udevmakeof"></span>[udev的组成](#TOCID)
@@ -179,7 +179,7 @@ void devfs_unregister(devfs_handle_t de)//销毁设备文件
 	1. 当内核发现新设备后，内核通过netlink发送uevent
 	1. udev获取内核发出的信息，进行规制匹配（匹配的内容包括：SUBSYSTEM、ACTION、attribute、内核提供的名称（KERNEL=）以及其他的环境变量）。
 	1. 假设我们再linux系统插上一个Kingston的U盘，我们可以通过udev工具`udevadmionitou --kernel --property --udev`捕获uevent信息如下：
-	![kingston U盘的uevent](pic/03Linux文件操作学习11.png)
+	![kingston U盘的uevent](pic/03/03Linux文件操作学习11.png)
 	我们可以通过下面的代码让，插入kingstonU盘的时候自动为它创建一个/dev/kingstonUD的符号链接
 	```
 	#Kingston USB mass storage

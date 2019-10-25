@@ -33,25 +33,26 @@
 ## <span id="foc"></span>[FOC框图](#TOCID)
 <center>FOC总框图</center>
 
-![FOC](pic/04FOC框图.png)
+![FOC](pic/04/04FOC框图.png)
 <center>无感FOC框图</center>
 
-![FOC](pic/04无感FOC框图.png)
-![FOC](pic/04矢量控制图.png)
-![FOC](pic/04FOC.png)
-![FOC](pic/04无感控制.png)
-![FOC](pic/04自总结foc.png)
+![FOC](pic/04/04无感FOC框图.png)
+![FOC](pic/04/04矢量控制图.png)
+![FOC](pic/04/04FOC.png)
+![FOC](pic/04/04无感控制.png)
+![FOC](pic/04/04自总结foc.png)
+![FOC](pic/04/04自总结只有电流foc.png)
 
 ## <span id="iqmathlib"></span>[IQ库学习](#TOCID)
-1. [IQ库英文文档](pic/04IQ_math_lib.pdf),文件路径：pic/04IQ_math_lib.pdf
-2. [IQ库中文文档](pic/04IQmath中文手册.pdf),文件路径：pic/04IQmath中文手册.pdf
+1. [IQ库英文文档](pic/04/04IQ_math_lib.pdf),文件路径：pic/04/04IQ_math_lib.pdf
+2. [IQ库中文文档](pic/04/04IQmath中文手册.pdf),文件路径：pic/04/04IQmath中文手册.pdf
 3. [Sin_Table](https://www.mymathtables.com/trigonometric/cotangents-0to90-tables.html),文件路径：https://www.mymathtables.com/trigonometric/cotangents-0to90-tables.html
 ## <span id="cursample"></span>[电流采样](#TOCID)
 1. 电流采样
 	> 电流采样实则是指，当桥臂导通时相应通过的相电流，由于三相电流代数和为0，所以我们仅采样其中两项电流，第三相电流通过代数和为0反推出来。
 	> 同时由于采样的功率电阻不大（图为0.15欧）,通过的电流就算1A电压也不大，所以需要通过运放进行电压放大，放大后接入单片机的AD采样口，
 	> 换算公式可以如$\frac{5V}{(0.15Ω * xA * M倍)} * 4096(采样精度12位)$
-	![电流采样](pic/04电流采样图.png)
+	![电流采样](pic/04/04电流采样图.png)
 1. AD校正偏差
 	> 由于电路本身的差异性，我们需要在上电前到电压稳定后先进行AD采样，作为初始的偏移AD值 
 1. 电流代数计算
@@ -60,19 +61,19 @@
 1. 电流采样方式
 	1. 单电阻采样
 	* 单电阻采样：通过母线电流，实现一个周期内两相电流的先后采样，通过三相电流代数和为0，算出第三相电流。(**对AD采样要求高，PWM控制精度高**)
-	![单电阻电流采样](pic/04单电阻周期采样.png)
-	![单电阻电流采样](pic/04单电阻采样.png)
+	![单电阻电流采样](pic/04/04单电阻周期采样.png)
+	![单电阻电流采样](pic/04/04单电阻采样.png)
 
 	1. 双电阻采样
 	* 双电阻采样：通过对桥臂电流采样实现，一个周期两相电流的同时采样，通过电流代数和为0，换算出第三相电流。
-	![双电阻电流采样](pic/04双电阻采样.png)
+	![双电阻电流采样](pic/04/04双电阻采样.png)
 
 ## <span id="coordinate"></span>[坐标变换](#TOCID)
 ***转子磁场的定向控制是指：控制逆变输出使得q-d坐标系和M-T坐标系重合***
 1. 定子坐标系变换(Clarke变换)<span id="Clarke"></span>[](#TOCID)
 	* **定子坐标系变换(Clarke变换)是指: 把三相定子绕组A-B-C(每相相差120°)坐标系转换为$\alpha-\beta$坐标系**
 	* **$\alpha-\beta$坐标系($\alpha$轴与A轴重合，$\beta$轴超前$\alpha$轴90°)**
-	![Clarke变换](pic/04Clarke变换.png)![Clarke变换](pic/04Clarke变换结果.png)
+	![Clarke变换](pic/04/04Clarke变换.png)![Clarke变换](pic/04/04Clarke变换结果.png)
 	> 设：三相电绕组的匝数为$N_3$,两相绕组有效匝数为$N_2$
 	> $$ N_2i_{\alpha}=N_3i_A-N_3i_Bcos\frac{\pi}{3}-N_3i_Ccos\frac{\pi}{3}=N_3(i_A-\frac{i_B}{2}-\frac{i_C}{2}) \tag{1}$$ 
 	> $$N_2i_{\beta}=N_3i_Bsin\frac{\pi}{3}-N_3i_Csin\frac{\pi}{3}=\frac{\sqrt{3}}{2}N_2(i_B-i_C) \tag{2}$$
@@ -88,7 +89,7 @@
 2. 转子坐标系变换(Park变换)<span id="Park"></span>[](#TOCID)
 	* **转子坐标系变换(Park变换)是指: 把静止定子坐标系$\alpha-\beta$坐标系转换为旋转的转子坐标系d-q坐标系**
 	* **d-q坐标系(d轴与转子磁极的轴线重合，q轴超前d轴90°)(d-q坐标系和转子同步旋转)**
-![Park变换](pic/04Park变换结果.png)
+![Park变换](pic/04/04Park变换结果.png)
 	> 由图可知：
 	> $$i_{d} = i_{\alpha}cos\varphi + i_{\beta}sin\varphi \tag{1}$$
 	> $$i_{q} = -i_{\alpha}sin\varphi + i_{\beta}cos\varphi \tag{2}$$
@@ -102,13 +103,13 @@
 	* **定向坐标系变换是指: 把旋转的转子坐标系d-q坐标系同步为定向坐标系M-T坐标系**
 	* **M-T坐标系(M(d)轴与磁链方向重合，T(q)轴是超前M(d)轴90°的力矩轴)**
 	* **转子磁场的定向控制时，M-T坐标系与d-q坐标重合**
-![Park变换](pic/04MT变换结果.png)
+![Park变换](pic/04/04MT变换结果.png)
 
 ## <span id="svpwm"></span>[矢量合成学习(SVPWM)](#TOCID)
 1. 合成矢量控制原理<span id="controlbase"></span>[](#TOCID)
 	设中性点为O，逆变器(我们代码控制)输出的三相相电压为$U_{AO},U_{BO},U_{CO}$,他们在空间上相差120°，因而可以定义三个电压矢量为$U_{AO}(t),U_{BO}(t),U_{CO}(t)$,(**实际上这是我们控制6个mos关开关的结果**)
 	
-	![电压和磁链关系](pic/04电压空间矢量合成.png)
+	![电压和磁链关系](pic/04/04电压空间矢量合成.png)
 	按照空间矢量功率与三相瞬时功率不变的原则得：$k=\sqrt{\frac{2}{3}}且\gamma=\frac{2\pi}{3}$
 	> 设$U_d$为相电压的有效值，f为电源频率则有：
 	> $$ \left\{\begin{aligned}
@@ -132,13 +133,13 @@
 		\end{aligned}\right.$$
 	**这里的$U_{AO'}(t),U_{BO'}(t),U_{CO'}(t)$是以直流地为参考的电压,因此我们可以任意定义参考点**
 
-	![直流等效模型](pic/04电压矢量计算.png)
+	![直流等效模型](pic/04/04电压矢量计算.png)
 	**通过等效模型可以简单的换算出各个矢量的表示**
 	> 以$u_0(1,0,0)$为例，
 	A的上桥臂导通，下桥臂截止。
 	B的上桥臂截止，下桥臂导通。
 	C的上桥臂截止，下桥臂导通。
-	![u1等效模型](pic/04u1.png)
+	![u1等效模型](pic/04/04u1.png)
 	$$ \left\{\begin{aligned}
 		&U_{ab} = U_d, U_{bc} = 0, U_{ca} = -U_d\\
 		&U_{ao} - U_{bo} = U_d, U_{ao} - U_{co} = U_d\\
@@ -158,10 +159,10 @@
 	| $u_5$|0|0|1|$-\frac{1}{3}U_d$|$-\frac{1}{3}U_d$|$\frac{2}{3}U_d$|$\sqrt{\frac{2}{3}}U_de^{j\frac{4\pi}{3}}$|
 	| $u_6$|1|0|1|$\frac{1}{3}U_d$|$-\frac{2}{3}U_d$|$\frac{1}{3}U_d$|$\sqrt{\frac{2}{3}}U_de^{j\frac{5\pi}{3}}$|
 	| $u_7$|1|1|1|0|0|0|0|
-	![电压和磁链关系](pic/04电压矢量和磁链的关系4.png)
-	![期望电压矢量图](pic/04期望电压矢量图2.png)
-	![合成电压矢量(磁势)图](pic/04合成电压矢量(磁势)图3.png)
-	![$\alpha\beta$合成电压矢量(磁势)图](pic/04合成电压矢量图1.png)
+	![电压和磁链关系](pic/04/04电压矢量和磁链的关系4.png)
+	![期望电压矢量图](pic/04/04期望电压矢量图2.png)
+	![合成电压矢量(磁势)图](pic/04/04ab坐标系输入定子速度电流磁通.png/04合成电压矢量(磁势)图3.png)
+	![$\alpha\beta$合成电压矢量(磁势)图](pic/04/04合成电压矢量图1.png)
 
 2. 磁链矢量扇区判断<span id="sector"></span>[](#TOCID)
 	| 扇区号|落在该扇区条件|变化成条件|$\alpha$条件|$\beta$条件|
@@ -208,16 +209,16 @@
 	**五段式SVPWM**
 	* 五段式SVPWM有两种，一种是使用V0零矢量，一种是使用V7零矢量
 	* 为了方便电流采样，一般使用V0式的五段式SVPWM
-	![五段式SVPWM](pic/04五段式SVPWM.png)
+	![五段式SVPWM](pic/04/04五段式SVPWM.png)
 
 	**七段式SVPWM**
 	* 七段式SVPWM是，通过3段零矢量和4段相邻的非零矢量合成电压矢量，开头和结尾使用V0零	矢量，中间使用V7零矢量。
 	* 非零矢量使电机磁通空间矢量发生运动，零矢量是电机空间矢量静止。
-	![七段式SVPWM](pic/04七段式SVPWM.png)
+	![七段式SVPWM](pic/04/04七段式SVPWM.png)
 3. SVPWM的时间控制<span id="svpwmtime"></span>[](#TOCID)
 	设$u_s$为期望电压矢量;T 为采样周期;$T_x、T_y、T_0$ 分别为对应两个非零电压矢量$u_x、u_y$和零电压矢量$u_0$在 一个采样周期的作用时间;其中$u_0$包括了$u_0$ 和$u_7$ 两个零矢量。则时间控制式是:$$\int_{0}^{T}u_sdt = \int_{0}^{T_x}u_xdt + \int_{T_x}^{T_y}u_ydt + \int_{T_{x+y}}^{T}u_0dt $$
 	由于$u_0$为零向量变形为：$$u_sT = u_x T_x + u_y T_y + u_0 T_0 = u_sT = u_x T_x + u_y T_y $$
-	![时间计算](pic/04时间计算.png)
+	![时间计算](pic/04/04时间计算.png)
 	> 由图可知：
 	> $$ \left\{\begin{aligned}
 	&|U_{ref}|\cos\theta=\frac{T_4}{T_s}|U_4|+\frac{T_6}{T_s}|U_6|\cos\frac{\pi}{3}\\
@@ -232,7 +233,7 @@
 	\end{aligned}\right. $$
 	> 式中m为SVPWM调制系数,(调制比=调制波基波峰值/载波基波峰值),$T_7$为零向量时间
 3. SVPWM的时间控制和电压$\alpha\beta$关系<span id="svpwmabtime"></span>[](#TOCID)
-	![SVPWM的时间控制和电压](pic/04SVPWM的时间控制和电压.png)
+	![SVPWM的时间控制和电压](pic/04/04SVPWM的时间控制和电压.png)
 	如图所示，svpwm时间控制和电压$\alpha\beta$关系，可表示为
 	> $$ \left\{\begin{aligned}
 	&U_{\alpha}T_s=U_1 T_1 + U_2 T_2 \cos{\frac{\pi}{3}} =\frac{2}{3}U_d(T_1 + \frac{1}{2}T_2)\\
@@ -270,7 +271,7 @@
 	> 速度估算：$$\omega(k) = \frac{\theta(k)-\theta(k-1)}{T}$$$$\omega(k) = \omega(k)\frac{1}{1+\tau_ss}$$
 	
 1. PLL锁相环法-位置估算<span id="PLL"></span>[](#TOCID)
-	![PLL计算原理](pic/04PLL计算原理.png)
+	![PLL计算原理](pic/04/04PLL计算原理.png)
 	<center>PLL锁相环自动控制原理</center>
 	PLL锁相环控制优势：
 
@@ -294,7 +295,7 @@
 	> $L_s$是定子等效两相绕组间的自感,$L_s=\frac{3}{2}L_{ms}+L_{is}=L_m+L_{is}$
 	> $L_m$是转子等效两相绕组间的自感,$L_r=\frac{3}{2}L_{ms}+L_{ir}=L_m+L_{ir}$
 2. 变换到静止坐标系方程<span id="static"></span>[](#TOCID)
-	![静止变换](pic/04静止绕组变换.png)
+	![静止变换](pic/04/04静止绕组变换.png)
 	**将通过了Clarke变换(3/2变换)的坐标，再进一步变换到同一个静止坐标系上**，如图6-7吧，则有：
 	> 由图可知，从旋转坐标变换到静止坐标的变换矩阵为：
 	> $$ C_{2r/2s}(\theta) = \left[ \begin{matrix} 
@@ -314,7 +315,7 @@
 
 3. 变换到旋转坐标系方程<span id="spin"></span>[](#TOCID)
 	**下面把一般情况推广到普遍情况，把坐标变换到旋转的d-q坐标系。**
-	![旋转变换](pic/04旋转绕组变换.png)
+	![旋转变换](pic/04/04旋转绕组变换.png)
 	> 定子的变换矩阵为：
 	> $$ C_{2s/2dq}(\varphi) = \left[ \begin{matrix} 
 	\cos\varphi & \sin\varphi \\-\sin\varphi & \cos\varphi 
@@ -420,7 +421,7 @@
 
 		> 输出变量：  $$Y=\left[ \begin{matrix} \omega & \sqrt{\psi_{r\alpha}^2 + \psi_{r\beta}^2} \end{matrix} \right]^T \tag{1-10}$$
 		**转换为自动控制原理图如下：**
-		![旋转变换](pic/04ab坐标系输入速度电流磁通.png)
+		![旋转变换](pic/04/04ab坐标系输入速度电流磁通.png)
 	
 1. 以速度\定子电流\定子磁通为输入量的状态方程<span id="wip1status"></span>[](#TOCID)
 	1. qt坐标系的状态方程
@@ -456,7 +457,7 @@
 
 		> 同(1-8)输出变量：  $$Y=\left[ \begin{matrix} \omega & \sqrt{\psi_{sd}^2 + \psi_{sq}^2} \end{matrix} \right]^T \tag{2-8}$$
 		**转换为自动控制原理图如下：**
-		![旋转变换](pic/04qt坐标系输入定子速度电流磁通.png)
+		![旋转变换](pic/04/04qt坐标系输入定子速度电流磁通.png)
 	2. $\alpha \beta$ 坐标系的状态方程
 		> **若令$\omega_1 = 0$,则可以使得qt坐标系变换为$\alpha \beta$ 坐标系**
 		> 可得$\alpha \beta$ 坐标系下的状态方程为：
@@ -477,14 +478,14 @@
 
 		> 输出变量：  $$Y=\left[ \begin{matrix} \omega & \sqrt{\psi_{s\alpha}^2 + \psi_{s\beta}^2} \end{matrix} \right]^T \tag{2-8}$$
 		**转换为自动控制原理图如下：**
-		![旋转变换](pic/04ab坐标系输入定子速度电流磁通.png)
+		![旋转变换](pic/04/04ab坐标系输入定子速度电流磁通.png)
 
 2. 变换到MT坐标系状态方程<span id="mtspin"></span>[](#TOCID)
 	> 将静止正交的$\alpha \beta$ 坐标系的转子旋转矢量写成负数形式：
 	$$ \psi_r = \psi_{r\alpha} + j \psi_{r\beta} = \psi_r e^{j\arctg\frac{\psi_{r\beta}}{\psi_{r\alpha}}} = \psi_r e^{j \varPhi} $$
 	> **转子磁链旋转矢量$\psi_r$的空间角度为$\varPhi$,旋转角速度$\omega_1 = \frac{d\psi}{dt}$。**
 	> 旋转正交dq坐标系的一个特例是与转子磁链旋转矢量$\psi_r$同步的旋转坐标系，因d轴和转子磁链矢量重合，称作按转子磁链定向的同步旋转正交坐标系，简称MT坐标系，此时d轴改成M轴，q轴改成T轴。
-	![MT坐标系](pic/04MT坐标系.png)
+	![MT坐标系](pic/04/04MT坐标系.png)
 	> 由于M轴与转子磁链矢量重合，因此$\psi_{rm} = \psi_{rd} = \psi_r$ $\psi_{rt} = \psi_{rq} = 0$
 	> 为了保证M轴与转子磁链矢量始终重合$\frac{d \psi_{rt}}{dt} = \frac{d \psi_{rq}}{dt} = 0$
 	> 综合整理得：
@@ -504,7 +505,7 @@
 	> mt坐标系的旋转角速度与转子转速只差定义为转差角频率$\omega_s = \omega_1 - \omega = \frac{L_m}{T_r \psi_r} i_{st}$
 
 	> mt坐标系的转矩表达式：$T_e = \frac{n_p L_m}{L_r} i_{st} \psi_r$
-	![MT磁链框图](pic/04MT磁链控制.png)
+	![MT磁链框图](pic/04/04MT磁链控制.png)
 
 ## <span id="mccalculate"></span>[转子磁链计算](#TOCID)
 > &emsp;&emsp;按转子磁链定向的矢量控制系统的关键是$\psi_r$的准确定向，也就是说需要获得转子磁链矢量的空间位置。除此之外，在构成转子磁链反馈以及转矩控制时，转子磁链的幅值也是需要控制的。根据转子磁链的实际值进行的控制方法，称作直接定向控制。
@@ -529,7 +530,7 @@
 	& \cos\psi = \frac{\psi_{r\alpha}}{\psi_{r}}
 	\end{aligned}\right. $$
 	**转换为自动控制原理图如下：**
-	![旋转变换](pic/04ab电流计算磁链.png)
+	![旋转变换](pic/04/04ab电流计算磁链.png)
 	**在$\alpha \beta$ 坐标系按照电流模型计算转子磁链时，由于电压、电流和磁链均为正玄	量，程序计算量大、复杂，而且对计算步长敏感**
 1. 在MT坐标系上计算转子磁链的电流模型<span id="mtcur"></span>[](#TOCID)
    > 根据mt坐标系计算可得：
@@ -537,7 +538,7 @@
 	& \frac{d \psi_r}{dt} = -\frac{1}{T_r} \psi_r + \frac{L_m}{T_r} i_sm \\
 	& \omega_1 = \omega + \frac{L_m}{T_r \psi_r}i_{st}
 	\end{aligned}\right. $$
-	![mt计算框图](pic/04mt计算磁链框图.png)
+	![mt计算框图](pic/04/04mt计算磁链框图.png)
 	可知比起$\alpha \beta$ 坐标系上计算转子磁链的电流模型，mt的计算量要小些，步长可以适当大些。但是在计算前需要先将电压电流和磁链变换到mt坐标系，定向不准，导致$\omega_1$计算不准，而$\omega_1$又影响下一步。
 
 	**不管是$\alpha \beta$ 坐标系还是mt坐标系下计算磁链的电磁模型都需要实测电流和转速信号，不论转速高低都可以适用，但都受到电机参数变化的影响。例如温度升高、频率变化等会影响转子电阻，而饱和程度会影响电感。这些影响将导致磁链幅值和位置信号失真，必然使得闭环磁链系统性能下降，这也是电流模型的不足之处**
@@ -571,7 +572,7 @@
 	& \psi_{r\beta} = \frac{L_r}{L_m}[\int(u_{s\beta} - R_s i_{s\beta})dt - \sigma L_s i_{s\beta}) 
 	\end{aligned}\right. \tag{2-7}$$
 	> 其对应的控制框图如下
-	![mt计算框图](pic/04ab电压模型计算磁链.png)
+	![mt计算框图](pic/04/04ab电压模型计算磁链.png)
 
 	**根据实测的电压电流信号，计算定子磁链，然后再计算转子磁链。电压模型不需要转速信号，且算法与转子电阻无关，只与定子电阻有关，而定子电阻相对容易测得。和电流模型相比，电压模型受电机参数变化的影响较小，且算法简单，更容易应用，但是由于他包含积分项，积分的初始值和累计误差都影响计算结果，在低速时，定子电阻压降变化影响较大。**
 	**比较起来电压模型适用于中高速范围，而电流模型能适应低速。有事为了提高准确度，把两种模型结合起来，在低速时采用电流模型，在中高速时采用电压模型，可以提高整个运行范围中的转子磁链计算准确度**
